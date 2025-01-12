@@ -1,12 +1,11 @@
 package handlers
 
 import (
-	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"go-auth-microservico/models"
+	"go-auth-microservico/database"
+	"go-auth-microservico/repository"
 	"go-auth-microservico/utils"
 
 	"golang.org/x/crypto/bcrypt"
@@ -32,7 +31,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, err := utils.ConnDB()
+	db, err := database.NewDBConnection()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("Erro ao conectar ao banco de dados"))
@@ -40,7 +39,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	user, err := getUserByUsername(db, loginRequest.Username)
+	user, err := repository.GetUserByUsername(db, loginRequest.Username)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte("Usuário ou senha inválidos"))
@@ -63,18 +62,4 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	response := map[string]string{"token": token}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
-}
-
-func getUserByUsername(db *sql.DB, username string) (*models.User, error) {
-	query := `SELECT id, username, password FROM users WHERE username = $1`
-	row := db.QueryRow(query, username)
-	var user models.User
-	err := row.Scan(&user.ID, &user.Username, &user.Password)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("usuário não encontrado")
-		}
-		return nil, err
-	}
-	return &user, nil
 }
