@@ -1,9 +1,9 @@
 package repository
 
 import (
+	"auth-service/models"
 	"database/sql"
 	"fmt"
-	"go-auth-microservico/models"
 )
 
 func GetUserByUsername(db *sql.DB, username string) (*models.User, error) {

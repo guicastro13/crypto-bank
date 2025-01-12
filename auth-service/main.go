@@ -1,10 +1,10 @@
 package main
 
 import (
+	"auth-service/handlers"
+	"auth-service/utils"
 	"fmt"
 	"net/http"
-	"go-auth-microservico/handlers"
-	"go-auth-microservico/utils"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 
 	port := "8080"
 	fmt.Printf("Servidor rodando na porta %s...\n", port)
-	if err := http.ListenAndServe(":"+port, nil); err !=  nil {
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		fmt.Printf("Erro ao iniciar o servidor: %v\n", err)
 		panic(err)
 	}

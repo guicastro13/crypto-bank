@@ -1,8 +1,8 @@
 package database
 
 import (
+	"auth-service/config/env"
 	"database/sql"
-	"go-auth-microservico/config/env"
 	"log/slog"
 
 	_ "github.com/lib/pq"

@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"go-auth-microservico/database"
-	"go-auth-microservico/repository"
-	"go-auth-microservico/utils"
+	"auth-service/database"
+	"auth-service/repository"
+	"auth-service/utils"
 
 	"golang.org/x/crypto/bcrypt"
 )
